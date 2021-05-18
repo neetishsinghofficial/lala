@@ -180,7 +180,6 @@ fs.readFile('credentials.json', (err, content) => {
 function bringfees(ordr,res){
 //this will save the fetch the order and print <it className=""></it>
   const obs=JSON.parse(ordr);
-  console.log(obs.orders[0].price_per_unit);
   fs.readFile('credentials.json', (err, content) => {
     if (err) return console.log('Error loading client secret file:', err);
     authorize(JSON.parse(content), writeData);
