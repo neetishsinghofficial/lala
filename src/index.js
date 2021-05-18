@@ -97,7 +97,7 @@ fs.readFile('credentials.json', (err, content) => {
         body = {
             "side": "buy",  //Toggle between 'buy' or 'sell'.
             "order_type": "market_order", //Toggle between a 'market_order' or 'limit_order'.
-            "market": "TRXINR", //Replace 'SNTBTC' with your desired market pair. //This parameter is only required for a 'limit_order'
+            "market": "TRXUSDT", //Replace 'SNTBTC' with your desired market pair. //This parameter is only required for a 'limit_order'
             "total_quantity": 11, //Replace this with the quantity you want
             "timestamp": timeStamp
         }
