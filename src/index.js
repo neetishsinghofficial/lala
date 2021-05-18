@@ -84,7 +84,7 @@ fs.readFile('credentials.json', (err, content) => {
         }
     });
 }
-   function buystock(volume,res){
+   function buystock(volume,res,tyr){
     var baseurl = "https://api.coindcx.com"
 
     var timeStamp = Math.floor(Date.now());
@@ -97,7 +97,7 @@ fs.readFile('credentials.json', (err, content) => {
         body = {
             "side": "buy",  //Toggle between 'buy' or 'sell'.
             "order_type": "market_order", //Toggle between a 'market_order' or 'limit_order'.
-            "market": "TRXUSDT", //Replace 'SNTBTC' with your desired market pair. //This parameter is only required for a 'limit_order'
+            "market": tyr, //Replace 'SNTBTC' with your desired market pair. //This parameter is only required for a 'limit_order'
             "total_quantity": volume, //Replace this with the quantity you want
             "timestamp": timeStamp
         }
@@ -122,7 +122,7 @@ fs.readFile('credentials.json', (err, content) => {
         })
    }
 
-   function sellstock(volume,res){
+   function sellstock(volume,res,tyr){
     var baseurl = "https://api.coindcx.com"
 
     var timeStamp = Math.floor(Date.now());
@@ -135,7 +135,7 @@ fs.readFile('credentials.json', (err, content) => {
         body = {
             "side": "sell",  //Toggle between 'buy' or 'sell'.
             "order_type": "market_order", //Toggle between a 'market_order' or 'limit_order'.
-            "market": "TRXUSDT", //Replace 'SNTBTC' with your desired market pair. //This parameter is only required for a 'limit_order'
+            "market": tyr, //Replace 'SNTBTC' with your desired market pair. //This parameter is only required for a 'limit_order'
             "total_quantity": volume, //Replace this with the quantity you want
             "timestamp": timeStamp
         }
@@ -194,18 +194,18 @@ app.use(bodyParser.json());
 
 app.post('/buyorder', function (req, res) {
     valuea=JSON.stringify(req.body.price);
-
+    namew=req.body.name;
     volume=req.body.volume;
     console.log(volume);
     type=req.body.type;
      console.log(type);
     if(type=="buy"){
-      buystock(volume,res);
+      buystock(volume,res,namew);
     }else if(type=="sell"){
-      sellstock(volume,res);
+      sellstock(volume,res,namew);
     }
     exchange=JSON.stringify(req.body.exchange);
-    namew=JSON.stringify(req.body.name);
+    
     
     console.log(valuea);
 
