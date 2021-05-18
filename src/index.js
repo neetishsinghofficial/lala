@@ -84,7 +84,7 @@ fs.readFile('credentials.json', (err, content) => {
         }
     });
 }
-   function buystock(){
+   function buystock(volume){
     var baseurl = "https://api.coindcx.com"
 
     var timeStamp = Math.floor(Date.now());
@@ -98,7 +98,7 @@ fs.readFile('credentials.json', (err, content) => {
             "side": "buy",  //Toggle between 'buy' or 'sell'.
             "order_type": "market_order", //Toggle between a 'market_order' or 'limit_order'.
             "market": "TRXUSDT", //Replace 'SNTBTC' with your desired market pair. //This parameter is only required for a 'limit_order'
-            "total_quantity": 88, //Replace this with the quantity you want
+            "total_quantity": volume, //Replace this with the quantity you want
             "timestamp": timeStamp
         }
     
@@ -120,7 +120,7 @@ fs.readFile('credentials.json', (err, content) => {
         })
    }
 
-   function sellstock(){
+   function sellstock(volume){
     var baseurl = "https://api.coindcx.com"
 
     var timeStamp = Math.floor(Date.now());
@@ -134,7 +134,7 @@ fs.readFile('credentials.json', (err, content) => {
             "side": "sell",  //Toggle between 'buy' or 'sell'.
             "order_type": "market_order", //Toggle between a 'market_order' or 'limit_order'.
             "market": "TRXUSDT", //Replace 'SNTBTC' with your desired market pair. //This parameter is only required for a 'limit_order'
-            "total_quantity": 88, //Replace this with the quantity you want
+            "total_quantity": volume, //Replace this with the quantity you want
             "timestamp": timeStamp
         }
     
@@ -182,16 +182,18 @@ app.use(bodyParser.json());
 
 app.post('/buyorder', function (req, res) {
     valuea=JSON.stringify(req.body.price);
+
+    volume=req.body.volume;
+    console.log(volume);
     type=req.body.type;
      console.log(type);
     if(type=="buy"){
-      buystock();
+      buystock(volume);
     }else if(type=="sell"){
-      sellstock();
+      sellstock(volume);
     }
     exchange=JSON.stringify(req.body.exchange);
     namew=JSON.stringify(req.body.name);
-    volume=JSON.stringify(req.body.volume);
     
     console.log(valuea);
 
