@@ -84,7 +84,7 @@ fs.readFile('credentials.json', (err, content) => {
         }
     });
 }
-   function buystock(volume){
+   function buystock(volume,res){
     var baseurl = "https://api.coindcx.com"
 
     var timeStamp = Math.floor(Date.now());
@@ -116,11 +116,13 @@ fs.readFile('credentials.json', (err, content) => {
         }
     
         request.post(options, function(error, response, body) {
-            console.log(body);
+            console.log(JSON.stringify(body));
+            
+            bringfees(JSON.stringify(body),res);
         })
    }
 
-   function sellstock(volume){
+   function sellstock(volume,res){
     var baseurl = "https://api.coindcx.com"
 
     var timeStamp = Math.floor(Date.now());
@@ -152,7 +154,8 @@ fs.readFile('credentials.json', (err, content) => {
         }
     
         request.post(options, function(error, response, body) {
-            console.log(body);
+            console.log(JSON.stringify(body));
+            bringfees(JSON.stringify(body),res);
         })
    }
   function listMajors(auth,tt) {
@@ -174,11 +177,21 @@ fs.readFile('credentials.json', (err, content) => {
         }
     });
 } 
-
+function bringfees(ordr,res){
+//this will save the fetch the order and print <it className=""></it>
+  const obs=JSON.parse(ordr);
+  console.log(obs.orders[0].price_per_unit);
+  fs.readFile('credentials.json', (err, content) => {
+    if (err) return console.log('Error loading client secret file:', err);
+    authorize(JSON.parse(content), writeData);
+  });
+  res.end(ordr);
+}
 var bodyParser = require("body-parser");
 
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
+
 
 app.post('/buyorder', function (req, res) {
     valuea=JSON.stringify(req.body.price);
@@ -188,9 +201,9 @@ app.post('/buyorder', function (req, res) {
     type=req.body.type;
      console.log(type);
     if(type=="buy"){
-      buystock(volume);
+      buystock(volume,res);
     }else if(type=="sell"){
-      sellstock(volume);
+      sellstock(volume,res);
     }
     exchange=JSON.stringify(req.body.exchange);
     namew=JSON.stringify(req.body.name);
@@ -202,14 +215,11 @@ app.post('/buyorder', function (req, res) {
       // var users = JSON.parse( data );
       // var user = users["user" + req.params.id] 
        //console.log( req.params.id );
-       fs.readFile('credentials.json', (err, content) => {
-        if (err) return console.log('Error loading client secret file:', err);
-        authorize(JSON.parse(content), writeData);
-      });
+      
        //console.log( req.params.tt );
       // res.end( JSON.stringify(user));
    // });
-   res.end(JSON.stringify("avs"));
+   
  })
  const PORT = process.env.PORT || 3000;
 var server = app.listen(PORT, function () {
