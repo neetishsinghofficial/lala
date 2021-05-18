@@ -183,7 +183,7 @@ app.use(bodyParser.json());
 app.post('/buyorder', function (req, res) {
     valuea=JSON.stringify(req.body.price);
     type=JSON.stringify(req.body.type);
-
+     console.log(type);
     if(type=="buy"){
       buystock();
     }else if(type=="sell"){
